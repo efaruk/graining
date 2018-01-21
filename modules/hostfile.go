@@ -23,7 +23,7 @@ type HostFileEntryList struct {
 
 // Run core.Module Run implementiation
 func (h HostFile) Run() int {
-	bs, err := readHostsFile(hostsFilePath)
+	bs, _ := readHostsFile(hostsFilePath)
 	parseHosts(bs)
 	return 0
 }
