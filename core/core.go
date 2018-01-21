@@ -12,5 +12,6 @@ type Context struct {
 type Module interface {
 	Run() int
 	SetContext(c Context) int
+	// Should return Json
 	GetResults() string
 }
