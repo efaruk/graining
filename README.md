@@ -1,2 +1,0 @@
-# graining
-Go Training

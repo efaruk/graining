@@ -4,37 +4,41 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/efaruk/graining/core"
+	"github.com/efaruk/graining/poc/core"
 )
 
+// HostFileModule is the interface for HostFileModule
 type HostFileModule interface {
 	core.Module
-	ParseHostFile(hostFileContent string)
+	ParseHostFile(hostFileContent string) map[string][]string
 }
 
 // HostFile ...
-type HostFile struct {
+type hostFile struct {
 	data  string
 	ipmap map[string][]string
 }
 
-type HostFileEntryList struct {
+// NewHostFileModule as consturoctor
+func NewHostFileModule() HostFileModule {
+	hf := new(hostFile)
+	return hf
 }
 
 // Run core.Module Run implementiation
-func (h HostFile) Run() int {
+func (h hostFile) Run() int {
 	bs, _ := readHostsFile(hostsFilePath)
 	parseHosts(bs)
 	return 0
 }
 
 // SetContext core.Module SetContext implementiation
-func (h HostFile) SetContext(c core.Context) int {
+func (h hostFile) SetContext(c core.Context) int {
 	return 0
 }
 
 // GetResults core.Module GetResults implementation
-func (h HostFile) GetResults() string {
+func (h hostFile) GetResults() string {
 	return "localhost 127.0.0.1"
 }
 
@@ -68,4 +72,11 @@ func parseHosts(hostsFileContent []byte) map[string][]string {
 		}
 	}
 	return hostsMap
+}
+
+// ParseHostFile parse given host file text in to a string map
+func (h hostFile) ParseHostFile(hostFileContent string) map[string][]string {
+	var byteContent = []byte(hostFileContent)
+	parsed := parseHosts(byteContent)
+	return parsed
 }
