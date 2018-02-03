@@ -1,0 +1,23 @@
+version: '2.3'
+
+services:
+  autoc:
+    build:
+      context: .
+    image: registry2.swarm.devfactory.com/aurea/central/automation-agent:${TAG}
+    container_name: ${STAGE}_aurea_central_automation-agent
+    labels:
+      com.trilogy.service: "aurea-central-automation-agent"
+      com.trilogy.stage: "${STAGE}"
+    mem_limit: "${MEM_LIMIT}"
+    cpu_quota: 200000
+    restart: always
+    healthcheck:
+      disable: true
+    network_mode: bridge
+    dns:
+      - dc-saas.devfactory.com
+      - 8.8.8.8
+    volumes:
+      - "${VOLUME_DIR}/central/automation/agent/logs:/logs"
+      - "${VOLUME_DIR}/central/automation/agent/data:/data"
